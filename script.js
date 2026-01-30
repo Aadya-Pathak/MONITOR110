@@ -80,6 +80,91 @@
   var themeToggle = document.getElementById('themeToggle');
   if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
 
+  // ——— Sign In modal ———
+  var signInBtn = document.getElementById('signInBtn');
+  var signInModal = document.getElementById('signInModal');
+  var signInModalClose = document.getElementById('signInModalClose');
+  var signInForm = document.getElementById('signInForm');
+
+  function openSignInModal() {
+    if (signInModal) {
+      signInModal.classList.remove('hidden');
+      signInModal.setAttribute('aria-hidden', 'false');
+      document.getElementById('signInEmail').focus();
+    }
+  }
+
+  function closeSignInModal() {
+    if (signInModal) {
+      signInModal.classList.add('hidden');
+      signInModal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  if (signInBtn) signInBtn.addEventListener('click', openSignInModal);
+  if (signInModalClose) signInModalClose.addEventListener('click', closeSignInModal);
+  if (signInModal) {
+    signInModal.addEventListener('click', function (e) {
+      if (e.target === signInModal) closeSignInModal();
+    });
+  }
+  if (signInForm) {
+    signInForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('signInEmail').value;
+      alert('Sign In submitted for ' + email + '. (Demo: no backend.)');
+      closeSignInModal();
+      signInForm.reset();
+    });
+  }
+
+  // ——— Start Free Trial modal ———
+  var freeTrialBtn = document.getElementById('startFreeTrialBtn');
+  var freeTrialModal = document.getElementById('freeTrialModal');
+  var freeTrialModalClose = document.getElementById('freeTrialModalClose');
+  var freeTrialForm = document.getElementById('freeTrialForm');
+
+  function openFreeTrialModal() {
+    if (freeTrialModal) {
+      freeTrialModal.classList.remove('hidden');
+      freeTrialModal.setAttribute('aria-hidden', 'false');
+      document.getElementById('trialName').focus();
+    }
+  }
+
+  function closeFreeTrialModal() {
+    if (freeTrialModal) {
+      freeTrialModal.classList.add('hidden');
+      freeTrialModal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  if (freeTrialBtn) freeTrialBtn.addEventListener('click', openFreeTrialModal);
+  if (freeTrialModalClose) freeTrialModalClose.addEventListener('click', closeFreeTrialModal);
+  if (freeTrialModal) {
+    freeTrialModal.addEventListener('click', function (e) {
+      if (e.target === freeTrialModal) closeFreeTrialModal();
+    });
+  }
+  if (freeTrialForm) {
+    freeTrialForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('trialName').value;
+      var email = document.getElementById('trialEmail').value;
+      var plan = document.getElementById('trialPlan').options[document.getElementById('trialPlan').selectedIndex].text;
+      alert('Free trial started for ' + name + ' (' + email + ') — ' + plan + '. (Demo: no backend.)');
+      closeFreeTrialModal();
+      freeTrialForm.reset();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (signInModal && !signInModal.classList.contains('hidden')) closeSignInModal();
+      if (freeTrialModal && !freeTrialModal.classList.contains('hidden')) closeFreeTrialModal();
+    }
+  });
+
   // ——— Section switching ———
   const sections = document.querySelectorAll('.dashboard-section');
   const navLinks = document.querySelectorAll('.nav-link, .logo[data-section]');
@@ -780,6 +865,115 @@
     bindChartSymbolClicks();
     render();
   }
+
+  // ——— Chatbot (FAQ responses) ———
+  var chatbotToggle = document.getElementById('chatbotToggle');
+  var chatbotPanel = document.getElementById('chatbotPanel');
+  var chatbotClose = document.getElementById('chatbotClose');
+  var chatbotMessages = document.getElementById('chatbotMessages');
+  var chatbotInput = document.getElementById('chatbotInput');
+  var chatbotSend = document.getElementById('chatbotSend');
+
+  var FAQ_RESPONSES = {
+    'what is monitor 110': 'Monitor 110 is a real-time signals and AI trading dashboard. It aggregates sentiment from blogs, forums, news, and discussions so you get early market insight. You can view live signals, AI trade recommendations, charts, a stock screener, watchlist, and price alerts.',
+    'how do i use signals': 'Use the Signals tab to see the live feed. Filter by source (news, forums, blogs, social) and sentiment (bullish, bearish, neutral). Use the search box to filter by symbol or keyword. Click a symbol in a signal to jump to charts if you want to dig deeper.',
+    'how do i set alerts': 'Go to the Alerts section from the top nav. Enter a symbol (e.g. AAPL), choose "Price above" or "Price below", and set your target price. Click Add Alert. Your alerts are saved in the browser. You can delete any alert from the list.',
+    'what is the free trial': 'The free trial lets you try Monitor 110 with full access for 7, 14, or 30 days. Click "Start Free Trial" in the header to sign up with your name and email and pick a trial length. No credit card required for the demo.',
+    'how do i sign in': 'Click "Sign In" in the top-right corner. Enter your email and password in the modal. This is a demo—actual sign-in would connect to a backend. Use "Start Free Trial" if you don\'t have an account yet.',
+    'how do i use the screener': 'Open the Screener from the nav. Set filters: sector, min/max price, and gainers/losers. Use the search box to find a symbol or company name. Click column headers to sort. Use "Add to Watchlist" on any row to add that stock to your watchlist.',
+    'how do i add to watchlist': 'From the Screener, click "Add to Watchlist" on a row. Or go to the Watchlist section and type a symbol in the input and click Add. Your watchlist is saved in the browser and also appears in the Charts sidebar.',
+    'what is ai trade': 'AI Trade shows algorithm-driven buy/sell/hold recommendations based on sentiment, momentum, and risk. You can enable auto-trade (simulated) or click "Execute" on a recommendation to log a simulated trade. Executed trades appear in the list below.',
+    'hello': 'Hi! How can I help you today? Try asking about signals, alerts, free trial, or the screener.',
+    'hi': 'Hi! Ask me anything about Monitor 110—signals, charts, alerts, or getting started.',
+    'help': 'I can answer questions about Monitor 110. Try: "What is Monitor 110?", "How do I use signals?", "How do I set alerts?", "What is the free trial?", or "How do I sign in?".',
+    'what is a stock': 'A stock (or share) is a piece of ownership in a company. When you buy stock, you own a small part of that company. Stock prices go up and down based on supply, demand, earnings, and market sentiment.',
+    'what is a share': 'A share is the same as a stock—one unit of ownership in a company. "Shares" and "stocks" are often used interchangeably. Buying shares means you own a portion of the company and may benefit from price gains and dividends.',
+    'what is dividend': 'A dividend is money a company pays to its shareholders from its profits, usually quarterly. Not all companies pay dividends; growth companies often reinvest profits instead. Dividend yield is the annual dividend divided by the stock price.',
+    'what is pe ratio': 'P/E (price-to-earnings) ratio is the stock price divided by earnings per share. It shows how much you pay per dollar of earnings. A high P/E can mean the stock is expensive or that investors expect strong growth; a low P/E can mean cheap or slower growth.',
+    'what is p/e ratio': 'P/E (price-to-earnings) ratio is the stock price divided by earnings per share. It shows how much you pay per dollar of earnings. A high P/E can mean the stock is expensive or that investors expect strong growth; a low P/E can mean cheap or slower growth.',
+    'what is market cap': 'Market cap (market capitalization) is the total value of a company\'s outstanding shares: share price × number of shares. Large-cap (e.g. over $10B) is usually more stable; small-cap can be riskier but with more growth potential.',
+    'what is volume': 'Volume is the number of shares (or contracts) traded in a given period. High volume often means more interest and liquidity; low volume can mean wider spreads and more volatility on each trade.',
+    'what is bullish': 'Bullish means expecting prices to go up. A "bull market" is a sustained period of rising prices. In our signals, "bullish" sentiment means the source or crowd is positive on that symbol.',
+    'what is bearish': 'Bearish means expecting prices to go down. A "bear market" is a sustained period of falling prices. In our signals, "bearish" sentiment means the source or crowd is negative on that symbol.',
+    'what is stop loss': 'A stop loss is an order to sell a stock (or close a position) when the price falls to a set level. It limits your loss by automatically exiting if the trade goes against you. Many traders use stop losses to manage risk.',
+    'what is a limit order': 'A limit order is an order to buy or sell at a specific price or better. A buy limit executes only at or below your price; a sell limit only at or above. It gives you price control but no guarantee the order will fill.',
+    'what is market order': 'A market order is an order to buy or sell immediately at the best available price. It usually fills quickly but the exact price can vary, especially in fast or thin markets.',
+    'what is an etf': 'An ETF (exchange-traded fund) is a fund that tracks an index, sector, or basket of assets and trades like a stock on an exchange. Examples: SPY (S&P 500), QQQ (Nasdaq). ETFs offer diversification and low cost.',
+    'what is ipo': 'An IPO (initial public offering) is when a company first sells its shares to the public on a stock exchange. After the IPO, the stock trades on the market and the company is "public."',
+    'what are earnings': 'Earnings are a company\'s profits (usually reported quarterly). "Earnings season" is when many companies report. Beats or misses vs expectations often move the stock. Our screener shows earning dates so you can plan.',
+    'what is volatility': 'Volatility is how much a price moves up and down over time. High volatility means bigger swings (more risk and opportunity); low volatility means calmer price action. It\'s often measured by standard deviation or the VIX index.',
+    'what is diversification': 'Diversification means spreading your money across different assets (stocks, sectors, regions) to reduce risk. If one investment falls, others may hold up. "Don\'t put all your eggs in one basket" is the idea.',
+    'what is roi': 'ROI (return on investment) is the gain or loss on an investment as a percentage of the amount invested. Formula: (Current value - Cost) / Cost × 100. It helps compare different investments.',
+    'what is a bull market': 'A bull market is a prolonged period when stock prices are rising, often with broad optimism. There\'s no strict definition; people often say 20% or more gain from a low. The opposite is a bear market.',
+    'what is a bear market': 'A bear market is a prolonged period when stock prices are falling, often 20% or more from a recent high. Sentiment is usually negative. Bear markets can last months or longer before recovery.',
+    'what is short selling': 'Short selling (shorting) is betting a stock will go down. You borrow shares, sell them, and hope to buy them back later at a lower price. Your profit is the difference. Losses can be large if the price rises.',
+    'what is an option': 'An option is a contract that gives you the right (not obligation) to buy (call) or sell (put) a stock at a set price by a set date. Calls profit when the stock goes up; puts when it goes down or for hedging.',
+    'what is yield': 'Yield is the return you get from an investment, often as a percentage. For stocks, dividend yield = annual dividend / price. For bonds, yield is the interest payment relative to price. Higher yield often means higher risk.',
+    'what is analyst rating': 'An analyst rating is a recommendation from a research analyst (e.g. Buy, Hold, Sell, Strong Buy). Our screener shows these ratings. They reflect the analyst\'s view on the stock\'s potential but are not guarantees.'
+  };
+
+  function getChatbotResponse(text) {
+    var key = (text || '').trim().toLowerCase();
+    if (!key) return "Please type a question. You can ask about signals, alerts, free trial, sign in, or how to get started.";
+    for (var faqKey in FAQ_RESPONSES) {
+      if (key.indexOf(faqKey) >= 0 || faqKey.indexOf(key) >= 0) return FAQ_RESPONSES[faqKey];
+    }
+    return "I don't have a specific answer for that. Try: What is Monitor 110? How do I set alerts? Or finance terms like: What is P/E ratio? What is dividend? What is ETF? What is stop loss? What is bullish? Use the suggestion buttons for quick questions.";
+  }
+
+  function appendChatMessage(isUser, text) {
+    if (!chatbotMessages) return;
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + (isUser ? 'user' : 'bot');
+    var bubble = document.createElement('span');
+    bubble.className = 'chat-bubble';
+    bubble.textContent = text;
+    div.appendChild(bubble);
+    chatbotMessages.appendChild(div);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function sendChatMessage() {
+    var text = (chatbotInput && chatbotInput.value || '').trim();
+    if (!text) return;
+    appendChatMessage(true, text);
+    if (chatbotInput) chatbotInput.value = '';
+    var reply = getChatbotResponse(text);
+    appendChatMessage(false, reply);
+  }
+
+  function openChatbot() {
+    if (chatbotPanel) {
+      chatbotPanel.classList.remove('hidden');
+      chatbotPanel.setAttribute('aria-hidden', 'false');
+      if (chatbotInput) chatbotInput.focus();
+    }
+  }
+
+  function closeChatbot() {
+    if (chatbotPanel) {
+      chatbotPanel.classList.add('hidden');
+      chatbotPanel.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  if (chatbotToggle) chatbotToggle.addEventListener('click', openChatbot);
+  if (chatbotClose) chatbotClose.addEventListener('click', closeChatbot);
+  if (chatbotSend) chatbotSend.addEventListener('click', sendChatMessage);
+  if (chatbotInput) {
+    chatbotInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') sendChatMessage();
+    });
+  }
+  document.querySelectorAll('.chat-suggestion').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var q = (btn.getAttribute('data-query') || '').trim();
+      if (q) {
+        appendChatMessage(true, q);
+        appendChatMessage(false, getChatbotResponse(q));
+      }
+    });
+  });
 
   // Initial render of dashboard views
   renderSignals();

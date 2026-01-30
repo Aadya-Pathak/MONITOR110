@@ -40,10 +40,60 @@
           <span class="theme-icon-dark" aria-hidden="true">☀</span>
           <span class="theme-icon-light" aria-hidden="true">☽</span>
         </button>
-        <button class="btn btn-ghost">Sign In</button>
-        <button class="btn btn-primary">Start Free Trial</button>
+        <button type="button" class="btn btn-ghost" id="signInBtn">Sign In</button>
+        <button type="button" class="btn btn-primary" id="startFreeTrialBtn">Start Free Trial</button>
       </div>
     </header>
+
+    <!-- Sign In Modal -->
+    <div class="modal-overlay hidden" id="signInModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-labelledby="signInModalTitle">
+        <div class="modal-header">
+          <h2 class="modal-title" id="signInModalTitle">Sign In</h2>
+          <button type="button" class="modal-close" id="signInModalClose" aria-label="Close">&times;</button>
+        </div>
+        <form class="modal-form" id="signInForm">
+          <div class="form-group">
+            <label for="signInEmail">Email</label>
+            <input type="email" id="signInEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signInPassword">Password</label>
+            <input type="password" id="signInPassword" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Start Free Trial Modal -->
+    <div class="modal-overlay hidden" id="freeTrialModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-labelledby="freeTrialModalTitle">
+        <div class="modal-header">
+          <h2 class="modal-title" id="freeTrialModalTitle">Start Free Trial</h2>
+          <button type="button" class="modal-close" id="freeTrialModalClose" aria-label="Close">&times;</button>
+        </div>
+        <form class="modal-form" id="freeTrialForm">
+          <div class="form-group">
+            <label for="trialName">Name</label>
+            <input type="text" id="trialName" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="trialEmail">Email</label>
+            <input type="email" id="trialEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="trialPlan">Trial plan</label>
+            <select id="trialPlan">
+              <option value="7">7 days free</option>
+              <option value="14">14 days free</option>
+              <option value="30">30 days free</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Start Free Trial</button>
+        </form>
+      </div>
+    </div>
 
     <!-- Live Signals View (primary) -->
     <div class="dashboard-section" id="section-signals">
@@ -343,6 +393,38 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Chatbot -->
+  <button type="button" class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat" title="Chat support">
+    <span class="chatbot-icon">💬</span>
+  </button>
+  <div class="chatbot-panel hidden" id="chatbotPanel" aria-hidden="true">
+    <div class="chatbot-header">
+      <h3 class="chatbot-title">Monitor 110 Support</h3>
+      <button type="button" class="chatbot-close" id="chatbotClose" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="chat-msg bot">
+        <span class="chat-bubble">Hi! I'm the Monitor 110 assistant. Ask me about signals, charts, alerts, free trial, or how to get started.</span>
+      </div>
+    </div>
+    <div class="chatbot-suggestions" id="chatbotSuggestions">
+      <button type="button" class="chat-suggestion" data-query="What is Monitor 110?">What is Monitor 110?</button>
+      <button type="button" class="chat-suggestion" data-query="How do I use signals?">How do I use signals?</button>
+      <button type="button" class="chat-suggestion" data-query="How do I set alerts?">How do I set alerts?</button>
+      <button type="button" class="chat-suggestion" data-query="What is the free trial?">What is the free trial?</button>
+      <button type="button" class="chat-suggestion" data-query="How do I sign in?">How do I sign in?</button>
+      <button type="button" class="chat-suggestion" data-query="What is P/E ratio?">What is P/E ratio?</button>
+      <button type="button" class="chat-suggestion" data-query="What is dividend?">What is dividend?</button>
+      <button type="button" class="chat-suggestion" data-query="What is an ETF?">What is an ETF?</button>
+      <button type="button" class="chat-suggestion" data-query="What is stop loss?">What is stop loss?</button>
+      <button type="button" class="chat-suggestion" data-query="What is bullish?">What is bullish?</button>
+    </div>
+    <div class="chatbot-input-wrap">
+      <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question..." maxlength="500" autocomplete="off">
+      <button type="button" class="chatbot-send" id="chatbotSend" aria-label="Send">Send</button>
     </div>
   </div>
 
