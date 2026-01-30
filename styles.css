@@ -17,6 +17,40 @@
   --bottom-bar-height: 40px;
 }
 
+/* Light theme */
+body[data-theme="light"] {
+  --bg-primary: #f5f6f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e8eaed;
+  --border: #dadce0;
+  --text-primary: #1a1c22;
+  --text-secondary: #5f6368;
+  --accent: #1a73e8;
+  --accent-hover: #1557b0;
+  --green: #137333;
+  --red: #c5221f;
+}
+
+body[data-theme="light"] .source-news {
+  background: rgba(26, 115, 232, 0.15);
+  color: #1a73e8;
+}
+
+body[data-theme="light"] .source-forum {
+  background: rgba(19, 115, 51, 0.15);
+  color: var(--green);
+}
+
+body[data-theme="light"] .source-blog {
+  background: rgba(95, 99, 104, 0.2);
+  color: var(--text-secondary);
+}
+
+body[data-theme="light"] .source-social {
+  background: rgba(213, 0, 0, 0.1);
+  color: #c5221f;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -198,6 +232,43 @@ body {
 
 .btn-primary:hover {
   background: var(--accent-hover);
+}
+
+.btn-icon {
+  padding: 8px 10px;
+  min-width: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.theme-toggle:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.theme-icon-dark {
+  display: none;
+  font-size: 1.1rem;
+}
+
+.theme-icon-light {
+  display: inline;
+  font-size: 1.1rem;
+}
+
+body[data-theme="light"] .theme-icon-dark {
+  display: inline;
+}
+
+body[data-theme="light"] .theme-icon-light {
+  display: none;
 }
 
 /* Main Content */
@@ -1107,6 +1178,55 @@ body {
 
 .data-table .btn-add-watchlist:hover {
   background: var(--accent-hover);
+}
+
+.data-table .btn-remind {
+  padding: 4px 8px;
+  margin-left: 6px;
+  font-size: 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.data-table .btn-remind:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.data-table .analyst-cell {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.data-table .perf-cell {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.data-table .earning-cell {
+  white-space: nowrap;
+}
+
+.data-table .earning-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.data-table .fin-cell {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Watchlist */

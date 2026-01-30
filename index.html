@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="bodyTheme">
   <div class="app">
     <!-- Top Header -->
     <header class="header">
@@ -36,6 +36,10 @@
         </div>
       </div>
       <div class="header-right">
+        <button type="button" class="btn btn-icon theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle theme">
+          <span class="theme-icon-dark" aria-hidden="true">☀</span>
+          <span class="theme-icon-light" aria-hidden="true">☽</span>
+        </button>
         <button class="btn btn-ghost">Sign In</button>
         <button class="btn btn-primary">Start Free Trial</button>
       </div>
@@ -246,6 +250,12 @@
                 <th data-sort="sector">Sector</th>
                 <th data-sort="price">Price</th>
                 <th data-sort="change">Change %</th>
+                <th data-sort="analystRating">Analyst Rating</th>
+                <th data-sort="performance">Performance</th>
+                <th data-sort="earningDate">Earning Date</th>
+                <th data-sort="valuation">Valuation (P/E)</th>
+                <th>Income Statement</th>
+                <th>Balance Sheet</th>
                 <th data-sort="volume">Volume</th>
                 <th data-sort="marketCap">Market Cap</th>
                 <th></th>

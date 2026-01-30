@@ -9,6 +9,7 @@
   const STORAGE_WATCHLIST = 'monitor110_watchlist';
   const STORAGE_ALERTS = 'monitor110_alerts';
   const STORAGE_AI_EXECUTED = 'monitor110_ai_executed';
+  const STORAGE_THEME = 'monitor110_theme';
 
   // ——— Mock live signals (blogs, forums, news, discussions) ———
   const MOCK_SIGNALS = [
@@ -36,21 +37,48 @@
 
   // ——— Mock stock data for Screener ———
   const MOCK_STOCKS = [
-    { symbol: 'AAPL', name: 'Apple Inc', sector: 'Technology', price: 178.42, change: 1.2, volume: '52.4M', marketCap: '2.78T' },
-    { symbol: 'GOOGL', name: 'Alphabet Inc', sector: 'Technology', price: 141.85, change: 0.8, volume: '28.1M', marketCap: '1.78T' },
-    { symbol: 'MSFT', name: 'Microsoft Corp', sector: 'Technology', price: 378.91, change: -0.3, volume: '22.3M', marketCap: '2.82T' },
-    { symbol: 'AMZN', name: 'Amazon.com Inc', sector: 'Consumer', price: 178.25, change: 1.5, volume: '45.2M', marketCap: '1.85T' },
-    { symbol: 'META', name: 'Meta Platforms', sector: 'Technology', price: 485.20, change: 2.1, volume: '18.9M', marketCap: '1.24T' },
-    { symbol: 'NVDA', name: 'NVIDIA Corp', sector: 'Technology', price: 495.80, change: -0.8, volume: '52.1M', marketCap: '1.22T' },
-    { symbol: 'TSLA', name: 'Tesla Inc', sector: 'Consumer', price: 248.50, change: -1.2, volume: '98.3M', marketCap: '789B' },
-    { symbol: 'JPM', name: 'JPMorgan Chase', sector: 'Finance', price: 195.40, change: 0.5, volume: '12.4M', marketCap: '567B' },
-    { symbol: 'V', name: 'Visa Inc', sector: 'Finance', price: 278.90, change: 0.3, volume: '7.2M', marketCap: '568B' },
-    { symbol: 'JNJ', name: 'Johnson & Johnson', sector: 'Healthcare', price: 158.20, change: -0.2, volume: '8.1M', marketCap: '382B' },
-    { symbol: 'UNH', name: 'UnitedHealth', sector: 'Healthcare', price: 525.60, change: 1.8, volume: '3.2M', marketCap: '486B' },
-    { symbol: 'XOM', name: 'Exxon Mobil', sector: 'Energy', price: 102.40, change: -0.5, volume: '18.5M', marketCap: '408B' },
-    { symbol: 'BTCUSD', name: 'Bitcoin', sector: 'Technology', price: 43250, change: 2.1, volume: '1.2B', marketCap: '845B' },
-    { symbol: 'ETHUSD', name: 'Ethereum', sector: 'Technology', price: 2285, change: -0.5, volume: '450M', marketCap: '275B' },
+    { symbol: 'AAPL', name: 'Apple Inc', sector: 'Technology', price: 178.42, change: 1.2, volume: '52.4M', marketCap: '2.78T', analystRating: 'Buy', performance: 12.5, perf1M: 2.1, perf3M: 5.2, perf6M: 8.1, perfYTD: 12.5, earningDate: 'Feb 15, 2025', valuation: 28.5, incomeStatement: 'Rev 394B / NI 97B', balanceSheet: 'Assets 352B / Eq 62B' },
+    { symbol: 'GOOGL', name: 'Alphabet Inc', sector: 'Technology', price: 141.85, change: 0.8, volume: '28.1M', marketCap: '1.78T', analystRating: 'Strong Buy', performance: 18.2, perf1M: 3.2, perf3M: 8.1, perf6M: 12.4, perfYTD: 18.2, earningDate: 'Apr 28, 2025', valuation: 22.1, incomeStatement: 'Rev 307B / NI 73B', balanceSheet: 'Assets 402B / Eq 283B' },
+    { symbol: 'MSFT', name: 'Microsoft Corp', sector: 'Technology', price: 378.91, change: -0.3, volume: '22.3M', marketCap: '2.82T', analystRating: 'Strong Buy', performance: 22.1, perf1M: 1.8, perf3M: 9.2, perf6M: 15.3, perfYTD: 22.1, earningDate: 'Jan 28, 2025', valuation: 35.2, incomeStatement: 'Rev 245B / NI 88B', balanceSheet: 'Assets 478B / Eq 206B' },
+    { symbol: 'AMZN', name: 'Amazon.com Inc', sector: 'Consumer', price: 178.25, change: 1.5, volume: '45.2M', marketCap: '1.85T', analystRating: 'Buy', performance: 15.8, perf1M: 2.5, perf3M: 7.1, perf6M: 11.2, perfYTD: 15.8, earningDate: 'Feb 6, 2025', valuation: 42.5, incomeStatement: 'Rev 574B / NI 30B', balanceSheet: 'Assets 527B / Eq 185B' },
+    { symbol: 'META', name: 'Meta Platforms', sector: 'Technology', price: 485.20, change: 2.1, volume: '18.9M', marketCap: '1.24T', analystRating: 'Buy', performance: 28.4, perf1M: 4.2, perf3M: 12.1, perf6M: 20.5, perfYTD: 28.4, earningDate: 'Jan 31, 2025', valuation: 24.8, incomeStatement: 'Rev 134B / NI 39B', balanceSheet: 'Assets 240B / Eq 153B' },
+    { symbol: 'NVDA', name: 'NVIDIA Corp', sector: 'Technology', price: 495.80, change: -0.8, volume: '52.1M', marketCap: '1.22T', analystRating: 'Strong Buy', performance: 45.2, perf1M: -2.1, perf3M: 15.2, perf6M: 38.1, perfYTD: 45.2, earningDate: 'Feb 26, 2025', valuation: 62.1, incomeStatement: 'Rev 60B / NI 30B', balanceSheet: 'Assets 66B / Eq 43B' },
+    { symbol: 'TSLA', name: 'Tesla Inc', sector: 'Consumer', price: 248.50, change: -1.2, volume: '98.3M', marketCap: '789B', analystRating: 'Hold', performance: -8.5, perf1M: -5.2, perf3M: -12.1, perf6M: -8.5, perfYTD: -8.5, earningDate: 'Jan 22, 2025', valuation: 58.2, incomeStatement: 'Rev 97B / NI 12B', balanceSheet: 'Assets 71B / Eq 31B' },
+    { symbol: 'JPM', name: 'JPMorgan Chase', sector: 'Finance', price: 195.40, change: 0.5, volume: '12.4M', marketCap: '567B', analystRating: 'Buy', performance: 8.2, perf1M: 1.2, perf3M: 3.5, perf6M: 6.1, perfYTD: 8.2, earningDate: 'Apr 11, 2025', valuation: 11.2, incomeStatement: 'Rev 158B / NI 50B', balanceSheet: 'Assets 3.9T / Eq 328B' },
+    { symbol: 'V', name: 'Visa Inc', sector: 'Finance', price: 278.90, change: 0.3, volume: '7.2M', marketCap: '568B', analystRating: 'Buy', performance: 6.5, perf1M: 0.8, perf3M: 2.8, perf6M: 5.2, perfYTD: 6.5, earningDate: 'Jan 30, 2025', valuation: 30.5, incomeStatement: 'Rev 33B / NI 17B', balanceSheet: 'Assets 91B / Eq 39B' },
+    { symbol: 'JNJ', name: 'Johnson & Johnson', sector: 'Healthcare', price: 158.20, change: -0.2, volume: '8.1M', marketCap: '382B', analystRating: 'Hold', performance: 2.1, perf1M: -0.5, perf3M: 1.2, perf6M: 2.1, perfYTD: 2.1, earningDate: 'Apr 15, 2025', valuation: 15.8, incomeStatement: 'Rev 85B / NI 35B', balanceSheet: 'Assets 167B / Eq 70B' },
+    { symbol: 'UNH', name: 'UnitedHealth', sector: 'Healthcare', price: 525.60, change: 1.8, volume: '3.2M', marketCap: '486B', analystRating: 'Buy', performance: 14.2, perf1M: 2.8, perf3M: 6.5, perf6M: 10.1, perfYTD: 14.2, earningDate: 'Apr 18, 2025', valuation: 22.5, incomeStatement: 'Rev 372B / NI 22B', balanceSheet: 'Assets 274B / Eq 91B' },
+    { symbol: 'XOM', name: 'Exxon Mobil', sector: 'Energy', price: 102.40, change: -0.5, volume: '18.5M', marketCap: '408B', analystRating: 'Hold', performance: -3.2, perf1M: -1.2, perf3M: -2.5, perf6M: -3.2, perfYTD: -3.2, earningDate: 'Jan 31, 2025', valuation: 11.8, incomeStatement: 'Rev 344B / NI 36B', balanceSheet: 'Assets 372B / Eq 205B' },
+    { symbol: 'BTCUSD', name: 'Bitcoin', sector: 'Technology', price: 43250, change: 2.1, volume: '1.2B', marketCap: '845B', analystRating: '—', performance: 25.0, perf1M: 8.2, perf3M: 15.0, perf6M: 22.1, perfYTD: 25.0, earningDate: '—', valuation: '—', incomeStatement: '—', balanceSheet: '—' },
+    { symbol: 'ETHUSD', name: 'Ethereum', sector: 'Technology', price: 2285, change: -0.5, volume: '450M', marketCap: '275B', analystRating: '—', performance: 18.5, perf1M: 5.1, perf3M: 10.2, perf6M: 18.5, perfYTD: 18.5, earningDate: '—', valuation: '—', incomeStatement: '—', balanceSheet: '—' },
   ];
+
+  // ——— Light/Dark theme ———
+  function getTheme() {
+    try {
+      return localStorage.getItem(STORAGE_THEME) || 'dark';
+    } catch (e) {
+      return 'dark';
+    }
+  }
+
+  function setTheme(theme) {
+    var body = document.getElementById('bodyTheme');
+    if (body) body.setAttribute('data-theme', theme === 'light' ? 'light' : '');
+    try {
+      localStorage.setItem(STORAGE_THEME, theme);
+    } catch (e) {}
+  }
+
+  function toggleTheme() {
+    var next = getTheme() === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  }
+
+  setTheme(getTheme());
+
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
 
   // ——— Section switching ———
   const sections = document.querySelectorAll('.dashboard-section');
@@ -283,12 +311,24 @@
     renderScreenerTable();
   }
 
+  var analystOrder = { 'Strong Buy': 5, 'Buy': 4, 'Hold': 3, 'Sell': 2, 'Strong Sell': 1 };
+
   function sortScreener(key, dir) {
     screenerSort = { key: key, dir: dir };
     screenerData.sort(function (a, b) {
-      let va = a[key], vb = b[key];
+      var va = a[key], vb = b[key];
+      if (key === 'analystRating') {
+        va = analystOrder[va] != null ? analystOrder[va] : 0;
+        vb = analystOrder[vb] != null ? analystOrder[vb] : 0;
+        return dir * (va - vb);
+      }
+      if (key === 'valuation') {
+        va = typeof va === 'number' ? va : -Infinity;
+        vb = typeof vb === 'number' ? vb : -Infinity;
+        return dir * (va - vb);
+      }
       if (typeof va === 'number' && typeof vb === 'number') return dir * (va - vb);
-      if (typeof va === 'string' && typeof vb === 'string') return dir * va.localeCompare(vb);
+      if (typeof va === 'string' && typeof vb === 'string') return dir * (va || '').localeCompare(vb || '');
       return 0;
     });
   }
@@ -300,6 +340,13 @@
       const changeClass = s.change >= 0 ? 'up' : 'down';
       const changeStr = (s.change >= 0 ? '+' : '') + s.change + '%';
       const inWatchlist = watchlist.some(function (w) { return w.symbol === s.symbol; });
+      const perfStr = (s.perf1M != null && s.perf3M != null) ? ('1M: ' + (s.perf1M >= 0 ? '+' : '') + s.perf1M + '% | 3M: ' + (s.perf3M >= 0 ? '+' : '') + s.perf3M + '% | 6M: ' + (s.perf6M >= 0 ? '+' : '') + s.perf6M + '% | YTD: ' + (s.perfYTD >= 0 ? '+' : '') + s.perfYTD + '%') : (s.performance != null ? (s.performance >= 0 ? '+' : '') + s.performance + '%' : '—');
+      const earningCell = s.earningDate && s.earningDate !== '—'
+        ? '<span class="earning-date">' + escapeHtml(s.earningDate) + '</span> <button type="button" class="btn-remind" data-symbol="' + s.symbol + '" data-date="' + escapeHtml(s.earningDate) + '" title="Set reminder">Remind</button>'
+        : '—';
+      const valuationStr = typeof s.valuation === 'number' ? s.valuation.toFixed(1) : (s.valuation || '—');
+      const incomeStr = s.incomeStatement || '—';
+      const balanceStr = s.balanceSheet || '—';
       return (
         '<tr>' +
         '<td class="symbol-cell">' + s.symbol + '</td>' +
@@ -307,8 +354,14 @@
         '<td>' + s.sector + '</td>' +
         '<td class="num-cell">' + formatPrice(s.price) + '</td>' +
         '<td class="num-cell ' + changeClass + '">' + changeStr + '</td>' +
-        '<td class="num-cell">' + s.volume + '</td>' +
-        '<td class="num-cell">' + s.marketCap + '</td>' +
+        '<td class="analyst-cell">' + (s.analystRating || '—') + '</td>' +
+        '<td class="perf-cell">' + perfStr + '</td>' +
+        '<td class="earning-cell">' + earningCell + '</td>' +
+        '<td class="num-cell">' + valuationStr + '</td>' +
+        '<td class="fin-cell">' + escapeHtml(incomeStr) + '</td>' +
+        '<td class="fin-cell">' + escapeHtml(balanceStr) + '</td>' +
+        '<td class="num-cell">' + (s.volume || '—') + '</td>' +
+        '<td class="num-cell">' + (s.marketCap || '—') + '</td>' +
         '<td>' +
         (inWatchlist
           ? '<span class="btn-remove" style="cursor:default;opacity:0.6">In list</span>'
@@ -326,6 +379,14 @@
           change: parseFloat(btn.dataset.change)
         });
         filterScreener();
+      });
+    });
+
+    tbody.querySelectorAll('.btn-remind').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var symbol = btn.dataset.symbol;
+        var date = btn.dataset.date;
+        alert('Reminder set for ' + symbol + ' earnings on ' + date + '. (Demo: no backend.)');
       });
     });
   }
