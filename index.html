@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monitor 110 — Charts & Analysis</title>
+  <title>Monitor 110 — Real-Time Signals & AI Trading</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,21 +14,25 @@
     <!-- Top Header -->
     <header class="header">
       <div class="header-left">
-        <a href="#" class="logo">
+        <a href="#" class="logo" data-section="charts">
           <span class="logo-icon">M110</span>
           <span class="logo-text">Monitor 110</span>
         </a>
         <nav class="main-nav">
-          <a href="#" class="nav-link active">Charts</a>
-          <a href="#" class="nav-link">Screener</a>
-          <a href="#" class="nav-link">Watchlist</a>
-          <a href="#" class="nav-link">Alerts</a>
+          <a href="#" class="nav-link" data-section="signals">Signals</a>
+          <a href="#" class="nav-link" data-section="ai-trade">AI Trade</a>
+          <a href="#" class="nav-link" data-section="charts">Charts</a>
+          <a href="#" class="nav-link" data-section="screener">Screener</a>
+          <a href="#" class="nav-link" data-section="watchlist">Watchlist</a>
+          <a href="#" class="nav-link" data-section="alerts">Alerts</a>
         </nav>
       </div>
       <div class="header-center">
+        <p class="header-tagline">Real-time signals from blogs, forums, news &amp; discussions — early market sentiment for professionals</p>
         <div class="search-bar">
-          <input type="text" placeholder="Search symbols (e.g. AAPL, BTCUSD)" id="symbolSearch">
           <span class="search-icon">⌕</span>
+          <input type="text" placeholder="Search symbols (e.g. AAPL, BTCUSD)" id="symbolSearch">
+          <button type="button" class="btn btn-search" id="headerSearchBtn" title="Search ticker">Search</button>
         </div>
       </div>
       <div class="header-right">
@@ -37,120 +41,297 @@
       </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Left Sidebar - Watchlist -->
-      <aside class="sidebar sidebar-left">
-        <div class="sidebar-header">
-          <h3>Watchlist</h3>
-          <button class="icon-btn" title="Add symbol">+</button>
-        </div>
-        <ul class="symbol-list">
-          <li class="symbol-item active">
-            <span class="symbol-name">AAPL</span>
-            <span class="symbol-price">178.42</span>
-            <span class="symbol-change up">+1.2%</span>
-          </li>
-          <li class="symbol-item">
-            <span class="symbol-name">GOOGL</span>
-            <span class="symbol-price">141.85</span>
-            <span class="symbol-change up">+0.8%</span>
-          </li>
-          <li class="symbol-item">
-            <span class="symbol-name">MSFT</span>
-            <span class="symbol-price">378.91</span>
-            <span class="symbol-change down">-0.3%</span>
-          </li>
-          <li class="symbol-item">
-            <span class="symbol-name">BTCUSD</span>
-            <span class="symbol-price">43,250</span>
-            <span class="symbol-change up">+2.1%</span>
-          </li>
-          <li class="symbol-item">
-            <span class="symbol-name">ETHUSD</span>
-            <span class="symbol-price">2,285</span>
-            <span class="symbol-change down">-0.5%</span>
-          </li>
-        </ul>
-      </aside>
-
-      <!-- Chart Area -->
-      <main class="chart-container">
-        <div class="chart-toolbar">
-          <div class="symbol-info">
-            <h2 class="current-symbol">AAPL</h2>
-            <span class="current-price">178.42</span>
-            <span class="current-change up">+1.2%</span>
-          </div>
-          <div class="timeframe-group">
-            <button class="tf-btn">1m</button>
-            <button class="tf-btn">5m</button>
-            <button class="tf-btn">15m</button>
-            <button class="tf-btn">30m</button>
-            <button class="tf-btn active">1H</button>
-            <button class="tf-btn">4H</button>
-            <button class="tf-btn">1D</button>
-            <button class="tf-btn">1W</button>
-          </div>
-          <div class="chart-tools">
-            <button class="tool-btn" title="Drawing">✎</button>
-            <button class="tool-btn" title="Indicators">ƒ</button>
-            <button class="tool-btn" title="Fullscreen">⛶</button>
+    <!-- Live Signals View (primary) -->
+    <div class="dashboard-section" id="section-signals">
+      <div class="panel-full">
+        <div class="panel-header panel-header-hero">
+          <h1>Live Signal Feed</h1>
+          <p class="panel-desc">Aggregated in real time from blogs, forums, news sites, and online discussions. Early insight into market sentiment and potential moves.</p>
+          <div class="signal-filters">
+            <select id="signalSourceFilter">
+              <option value="">All sources</option>
+              <option value="news">News</option>
+              <option value="forum">Forums</option>
+              <option value="blog">Blogs</option>
+              <option value="social">Social / Discussions</option>
+            </select>
+            <select id="signalSentimentFilter">
+              <option value="">All sentiment</option>
+              <option value="bullish">Bullish</option>
+              <option value="bearish">Bearish</option>
+              <option value="neutral">Neutral</option>
+            </select>
+            <input type="text" id="signalSearch" placeholder="Filter by symbol or keyword...">
           </div>
         </div>
-        <div class="chart-area" id="chartArea">
-          <canvas id="chartCanvas"></canvas>
-          <div class="chart-overlay">
-            <div class="crosshair-h" id="crosshairH"></div>
-            <div class="crosshair-v" id="crosshairV"></div>
-          </div>
-        </div>
-        <div class="chart-status">
-          <span>O: 176.20</span>
-          <span>H: 179.15</span>
-          <span>L: 175.80</span>
-          <span>C: 178.42</span>
-        </div>
-      </main>
-
-      <!-- Right Sidebar - Panel (optional) -->
-      <aside class="sidebar sidebar-right">
-        <div class="sidebar-header">
-          <h3>Details</h3>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-row">
-            <span>Open</span>
-            <span>176.20</span>
-          </div>
-          <div class="detail-row">
-            <span>High</span>
-            <span class="up">179.15</span>
-          </div>
-          <div class="detail-row">
-            <span>Low</span>
-            <span class="down">175.80</span>
-          </div>
-          <div class="detail-row">
-            <span>Volume</span>
-            <span>52.4M</span>
-          </div>
-          <div class="detail-row">
-            <span>Market Cap</span>
-            <span>2.78T</span>
-          </div>
-        </div>
-      </aside>
+        <div class="signals-feed" id="signalsFeed"></div>
+      </div>
     </div>
 
-    <!-- Bottom Bar - Drawing tools -->
-    <div class="bottom-bar">
-      <div class="drawing-tools">
-        <button class="draw-btn active" title="Cursor">↖</button>
-        <button class="draw-btn" title="Trend Line">∕</button>
-        <button class="draw-btn" title="Horizontal Line">—</button>
-        <button class="draw-btn" title="Rectangle">▭</button>
-        <button class="draw-btn" title="Fibonacci">φ</button>
+    <!-- AI Trade / Recommendations View (primary) -->
+    <div class="dashboard-section hidden" id="section-ai-trade">
+      <div class="panel-full">
+        <div class="panel-header panel-header-hero">
+          <h1>AI Trade Recommendations</h1>
+          <p class="panel-desc">Algorithm-driven suggestions that can trade on your behalf. Based on sentiment, momentum, and risk models.</p>
+          <div class="ai-trade-controls">
+            <label class="toggle-row">
+              <span>Auto-trade (simulated)</span>
+              <input type="checkbox" id="aiAutoTradeToggle">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="ai-status" id="aiStatus">AI analysis active — recommendations refresh periodically</span>
+          </div>
+        </div>
+        <div class="ai-recommendations-grid" id="aiRecommendationsGrid"></div>
+        <div class="ai-executed-section">
+          <h3>Executed Trades (simulated)</h3>
+          <ul class="ai-executed-list" id="aiExecutedList"></ul>
+          <div class="empty-state" id="aiExecutedEmpty">
+            <span class="empty-icon">📋</span>
+            <p>No executed trades yet. Enable auto-trade or click "Execute" on a recommendation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts View -->
+    <div class="dashboard-section hidden" id="section-charts">
+      <div class="main-content">
+        <aside class="sidebar sidebar-left">
+          <div class="sidebar-header">
+            <h3>Watchlist</h3>
+            <button class="icon-btn" title="Add symbol" id="watchlistQuickAdd">+</button>
+          </div>
+          <ul class="symbol-list" id="chartWatchlist">
+            <li class="symbol-item active" data-symbol="AAPL">
+              <span class="symbol-name">AAPL</span>
+              <span class="symbol-price">178.42</span>
+              <span class="symbol-change up">+1.2%</span>
+            </li>
+            <li class="symbol-item" data-symbol="GOOGL">
+              <span class="symbol-name">GOOGL</span>
+              <span class="symbol-price">141.85</span>
+              <span class="symbol-change up">+0.8%</span>
+            </li>
+            <li class="symbol-item" data-symbol="MSFT">
+              <span class="symbol-name">MSFT</span>
+              <span class="symbol-price">378.91</span>
+              <span class="symbol-change down">-0.3%</span>
+            </li>
+            <li class="symbol-item" data-symbol="BTCUSD">
+              <span class="symbol-name">BTCUSD</span>
+              <span class="symbol-price">43,250</span>
+              <span class="symbol-change up">+2.1%</span>
+            </li>
+            <li class="symbol-item" data-symbol="ETHUSD">
+              <span class="symbol-name">ETHUSD</span>
+              <span class="symbol-price">2,285</span>
+              <span class="symbol-change down">-0.5%</span>
+            </li>
+          </ul>
+        </aside>
+
+        <main class="chart-container">
+          <div class="chart-toolbar">
+            <div class="symbol-info">
+              <h2 class="current-symbol">AAPL</h2>
+              <span class="current-price">178.42</span>
+              <span class="current-change up">+1.2%</span>
+            </div>
+            <div class="timeframe-group">
+              <button class="tf-btn">1m</button>
+              <button class="tf-btn">5m</button>
+              <button class="tf-btn">15m</button>
+              <button class="tf-btn">30m</button>
+              <button class="tf-btn active">1H</button>
+              <button class="tf-btn">4H</button>
+              <button class="tf-btn">1D</button>
+              <button class="tf-btn">1W</button>
+            </div>
+            <div class="chart-tools">
+              <button class="tool-btn" title="Drawing">✎</button>
+              <button class="tool-btn" title="Indicators">ƒ</button>
+              <button class="tool-btn" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+          <div class="chart-area" id="chartArea">
+            <canvas id="chartCanvas"></canvas>
+            <div class="chart-overlay">
+              <div class="crosshair-h" id="crosshairH"></div>
+              <div class="crosshair-v" id="crosshairV"></div>
+            </div>
+          </div>
+          <div class="chart-status">
+            <span>O: 176.20</span>
+            <span>H: 179.15</span>
+            <span>L: 175.80</span>
+            <span>C: 178.42</span>
+          </div>
+        </main>
+
+        <aside class="sidebar sidebar-right">
+          <div class="sidebar-header">
+            <h3>Details</h3>
+          </div>
+          <div class="detail-panel">
+            <div class="detail-row"><span>Open</span><span>176.20</span></div>
+            <div class="detail-row"><span>High</span><span class="up">179.15</span></div>
+            <div class="detail-row"><span>Low</span><span class="down">175.80</span></div>
+            <div class="detail-row"><span>Volume</span><span>52.4M</span></div>
+            <div class="detail-row"><span>Market Cap</span><span>2.78T</span></div>
+          </div>
+        </aside>
+      </div>
+      <div class="bottom-bar">
+        <div class="drawing-tools">
+          <button class="draw-btn active" title="Cursor">↖</button>
+          <button class="draw-btn" title="Trend Line">∕</button>
+          <button class="draw-btn" title="Horizontal Line">—</button>
+          <button class="draw-btn" title="Rectangle">▭</button>
+          <button class="draw-btn" title="Fibonacci">φ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock Screener View -->
+    <div class="dashboard-section hidden" id="section-screener">
+      <div class="panel-full">
+        <div class="panel-header">
+          <h1>Stock Screener</h1>
+          <p class="panel-desc">Filter stocks by sector, price, and performance</p>
+        </div>
+        <div class="screener-toolbar">
+          <div class="filters-row">
+            <div class="filter-group">
+              <label>Sector</label>
+              <select id="filterSector">
+                <option value="">All Sectors</option>
+                <option value="Technology">Technology</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Consumer">Consumer</option>
+                <option value="Energy">Energy</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Price (min)</label>
+              <input type="number" id="filterPriceMin" placeholder="0" min="0" step="1">
+            </div>
+            <div class="filter-group">
+              <label>Price (max)</label>
+              <input type="number" id="filterPriceMax" placeholder="Any" min="0" step="1">
+            </div>
+            <div class="filter-group">
+              <label>Change %</label>
+              <select id="filterChange">
+                <option value="">Any</option>
+                <option value="up">Gainers only</option>
+                <option value="down">Losers only</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="screenerApply">Apply</button>
+            <button class="btn btn-ghost" id="screenerReset">Reset</button>
+          </div>
+          <div class="screener-search">
+            <input type="text" id="screenerSearch" placeholder="Search symbol or name...">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="screenerTable">
+            <thead>
+              <tr>
+                <th data-sort="symbol">Symbol</th>
+                <th data-sort="name">Name</th>
+                <th data-sort="sector">Sector</th>
+                <th data-sort="price">Price</th>
+                <th data-sort="change">Change %</th>
+                <th data-sort="volume">Volume</th>
+                <th data-sort="marketCap">Market Cap</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="screenerTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Watchlist View -->
+    <div class="dashboard-section hidden" id="section-watchlist">
+      <div class="panel-full">
+        <div class="panel-header">
+          <h1>My Watchlist</h1>
+          <p class="panel-desc">Track your favorite symbols in one place</p>
+        </div>
+        <div class="watchlist-actions">
+          <div class="add-symbol-form">
+            <input type="text" id="watchlistSymbolInput" placeholder="Add symbol (e.g. AAPL)" maxlength="12">
+            <button class="btn btn-primary" id="watchlistAddBtn">Add</button>
+          </div>
+          <p class="hint">Symbols are saved in your browser. Add from Screener or type above.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="watchlistTable">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>Change %</th>
+                <th>Volume</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="watchlistTableBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="watchlistEmpty">
+          <span class="empty-icon">★</span>
+          <p>No symbols in your watchlist yet.</p>
+          <p class="empty-hint">Add symbols using the field above or from the Screener.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Alerts View -->
+    <div class="dashboard-section hidden" id="section-alerts">
+      <div class="panel-full">
+        <div class="panel-header">
+          <h1>Price Alerts</h1>
+          <p class="panel-desc">Get notified when price crosses your target</p>
+        </div>
+        <div class="alert-form-card">
+          <h3>Create Alert</h3>
+          <div class="alert-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Symbol</label>
+                <input type="text" id="alertSymbol" placeholder="e.g. AAPL" maxlength="12">
+              </div>
+              <div class="form-group">
+                <label>Condition</label>
+                <select id="alertCondition">
+                  <option value="above">Price above</option>
+                  <option value="below">Price below</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Target Price</label>
+                <input type="number" id="alertPrice" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <button class="btn btn-primary" id="alertAddBtn">Add Alert</button>
+            </div>
+          </div>
+        </div>
+        <div class="alerts-list-wrap">
+          <h3>Your Alerts</h3>
+          <ul class="alerts-list" id="alertsList"></ul>
+          <div class="empty-state" id="alertsEmpty">
+            <span class="empty-icon">🔔</span>
+            <p>No price alerts yet.</p>
+            <p class="empty-hint">Create an alert above to get notified.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
